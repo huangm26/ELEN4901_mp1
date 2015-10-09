@@ -9,6 +9,58 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
-    <TextView android:text="Hello World!" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView android:text="Please Choose an animal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textSize="32sp"
+        />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/mouse"
+        android:layout_below="@+id/title"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/mouse" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/cat"
+        android:layout_below="@+id/mouse"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/cat" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/elephant"
+        android:layout_below="@+id/cat"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/elephant" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/mouse"
+        android:layout_toEndOf="@+id/mouse" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/result"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/title"
+        android:layout_marginBottom="50dp"
+        android:layout_alignEnd="@+id/title"
+        android:background="#edf84a" />
+
+
 </RelativeLayout>

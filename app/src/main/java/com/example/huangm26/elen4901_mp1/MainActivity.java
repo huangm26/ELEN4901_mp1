@@ -1,15 +1,26 @@
 package com.example.huangm26.elen4901_mp1;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    public static final int MOUSE = 1;
+    public static final int CAT = 2;
+    public static final int ELEPHANT = 3;
+    private ImageView displayView;
+    private TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +28,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        displayView = (ImageView) this.findViewById(R.id.imageView);
+        resultText = (TextView) this.findViewById(R.id.result);
+        Button mouse_button = (Button) this.findViewById(R.id.mouse);
+        Button cat_button = (Button) this.findViewById(R.id.cat);
+        Button elephant_button = (Button) this.findViewById(R.id.elephant);
+        mouse_button.setOnClickListener(this);
+        cat_button.setOnClickListener(this);
+        elephant_button.setOnClickListener(this);
+        displayView.setImageResource(R.drawable.question);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -48,5 +60,70 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int animal_chosen = 0;
+        switch (v.getId()){
+            case R.id.mouse:
+                animal_chosen = MOUSE;
+                Toast.makeText(this,"You chose Mouse", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.cat:
+                animal_chosen = CAT;
+                Toast.makeText(this,"You chose Cat", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.elephant:
+                animal_chosen = ELEPHANT;
+                Toast.makeText(this,"You chose Elephant", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+//                Toast.makeText(this,"You didn't choose any animal", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        Random rand = new Random();
+        int ComputerChoose = rand.nextInt(3) + 1;
+        Log.d("MainActivity", "Number " + ComputerChoose);
+        switch(ComputerChoose){
+            case MOUSE:
+//                displayView.setImageDrawable(getResources().getDrawable(R.drawable.mouse));
+                Log.d("MainActivity", "Mouse case");
+                displayView.setImageResource(0);
+                displayView.setImageResource(R.drawable.mouse);
+                if(animal_chosen == MOUSE)
+                    resultText.setText("This is a tie");
+                if(animal_chosen == CAT)
+                    resultText.setText("Congratulations, you win!");
+                if(animal_chosen == ELEPHANT)
+                    resultText.setText("Sorry, you lose...");
+                break;
+            case CAT:
+//                displayView.setImageDrawable(getResources().getDrawable(R.drawable.cat));
+                Log.d("MainActivity", "Cat case");
+                displayView.setImageResource(0);
+                displayView.setImageResource(R.drawable.cat);
+                if(animal_chosen == MOUSE)
+                    resultText.setText("Sorry, you lose...");
+                if(animal_chosen == CAT)
+                    resultText.setText("This is a tie");
+                if(animal_chosen == ELEPHANT)
+                    resultText.setText("Congratulations, you win!");
+                break;
+            case ELEPHANT:
+//                displayView.setImageDrawable(getResources().getDrawable(R.drawable.elephant));
+                Log.d("MainActivity", "Elephant case");
+                displayView.setImageResource(0);
+                displayView.setImageResource(R.drawable.elephant);
+                if(animal_chosen == MOUSE)
+                    resultText.setText("Congratulations, you win!");
+                if(animal_chosen == CAT)
+                    resultText.setText("Sorry, you lose...");
+                if(animal_chosen == ELEPHANT)
+                    resultText.setText("This is a tie");
+                break;
+            default:
+                break;
+        }
     }
 }
