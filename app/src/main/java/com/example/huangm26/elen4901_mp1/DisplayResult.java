@@ -22,6 +22,11 @@ public class DisplayResult extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_result);
         int result = getIntent().getExtras().getInt("Result");
@@ -34,7 +39,7 @@ public class DisplayResult extends AppCompatActivity implements View.OnClickList
             case WIN:
                 resultText.setText("Congratulations, you win!");
                 resultImage.setImageResource(0);
-                resultImage.setImageResource(R.drawable.win);
+                resultImage.setImageResource(R.drawable.win2);
                 break;
             case LOSE:
                 resultText.setText("Sorry, you lose...");

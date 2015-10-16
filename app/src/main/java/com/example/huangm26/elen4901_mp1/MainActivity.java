@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("MainActivity", "Number " + ComputerChoose);
         switch(ComputerChoose){
             case MOUSE:
-//                displayView.setImageDrawable(getResources().getDrawable(R.drawable.mouse));
                 Log.d("MainActivity", "Mouse case");
                 displayView.setImageResource(0);
                 displayView.setImageResource(R.drawable.mouse);
@@ -166,6 +165,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /*
+        This method builds an intent to start the DisplayResult activity.
+        It also updates the current status in the textView below
+     */
     private void displayResult(int result, View viewChosen)
     {
         Intent startResult = new Intent(this, DisplayResult.class);
@@ -186,7 +189,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         startActivity(startResult);
-        resultText.setText(String.format("The current result is Win %d, Lose %d, Tie %d", win, lose, tie));
+        resultText.setText(String.format("The current result is: Win %d, Lose %d, Tie %d", win, lose, tie));
     }
 }
