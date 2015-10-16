@@ -1,5 +1,6 @@
 package com.example.huangm26.elen4901_mp1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +20,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int MOUSE = 1;
     public static final int CAT = 2;
     public static final int ELEPHANT = 3;
+    public static final int WIN  = 1;
+    public static final int LOSE = 2;
+    public static final int TIE = 3;
     private ImageView displayView;
     private TextView resultText;
+    private int win;
+    private int lose;
+    private int tie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +35,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        /*
+            Find all the components in the view
+         */
         displayView = (ImageView) this.findViewById(R.id.imageView);
         resultText = (TextView) this.findViewById(R.id.result);
         Button mouse_button = (Button) this.findViewById(R.id.mouse);
         Button cat_button = (Button) this.findViewById(R.id.cat);
         Button elephant_button = (Button) this.findViewById(R.id.elephant);
+
+        /*
+            Set on click listener for buttons
+         */
         mouse_button.setOnClickListener(this);
         cat_button.setOnClickListener(this);
         elephant_button.setOnClickListener(this);
+
+        /*
+            Init the computer output image to be question mark, and init win counter to 0
+         */
         displayView.setImageResource(R.drawable.question);
+        win = 0;
+        lose = 0;
+        tie = 0;
 
     }
 
@@ -58,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -82,6 +103,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Toast.makeText(this,"You didn't choose any animal", Toast.LENGTH_SHORT).show();
                 break;
         }
+        computerGenerate(animal_chosen,v);
+    }
+
+    /*
+        This method is used to randomly generate an animal and compete it with the user's choice
+        And it will display thte output
+     */
+    private void computerGenerate(int userChoice, View viewChosen)
+    {
         Random rand = new Random();
         int ComputerChoose = rand.nextInt(3) + 1;
         Log.d("MainActivity", "Number " + ComputerChoose);
@@ -91,39 +121,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("MainActivity", "Mouse case");
                 displayView.setImageResource(0);
                 displayView.setImageResource(R.drawable.mouse);
-                if(animal_chosen == MOUSE)
-                    resultText.setText("This is a tie");
-                if(animal_chosen == CAT)
-                    resultText.setText("Congratulations, you win!");
-                if(animal_chosen == ELEPHANT)
-                    resultText.setText("Sorry, you lose...");
+                if(userChoice == MOUSE)
+//                    resultText.setText("This is a tie");
+                    displayResult(TIE, viewChosen);
+                if(userChoice == CAT)
+//                    resultText.setText("Congratulations, you win!");
+                    displayResult(WIN,viewChosen);
+                if(userChoice == ELEPHANT)
+//                    resultText.setText("Sorry, you lose...");
+                    displayResult(LOSE,viewChosen);
                 break;
             case CAT:
 //                displayView.setImageDrawable(getResources().getDrawable(R.drawable.cat));
                 Log.d("MainActivity", "Cat case");
                 displayView.setImageResource(0);
                 displayView.setImageResource(R.drawable.cat);
-                if(animal_chosen == MOUSE)
-                    resultText.setText("Sorry, you lose...");
-                if(animal_chosen == CAT)
-                    resultText.setText("This is a tie");
-                if(animal_chosen == ELEPHANT)
-                    resultText.setText("Congratulations, you win!");
+                if(userChoice == MOUSE)
+//                    resultText.setText("Sorry, you lose...");
+                    displayResult(LOSE, viewChosen);
+                if(userChoice == CAT)
+//                    resultText.setText("This is a tie");
+                    displayResult(TIE,viewChosen);
+                if(userChoice == ELEPHANT)
+//                    resultText.setText("Congratulations, you win!");
+                    displayResult(WIN,viewChosen);
                 break;
             case ELEPHANT:
 //                displayView.setImageDrawable(getResources().getDrawable(R.drawable.elephant));
                 Log.d("MainActivity", "Elephant case");
                 displayView.setImageResource(0);
                 displayView.setImageResource(R.drawable.elephant);
-                if(animal_chosen == MOUSE)
-                    resultText.setText("Congratulations, you win!");
-                if(animal_chosen == CAT)
-                    resultText.setText("Sorry, you lose...");
-                if(animal_chosen == ELEPHANT)
-                    resultText.setText("This is a tie");
+                if(userChoice == MOUSE)
+//                    resultText.setText("Congratulations, you win!");
+                    displayResult(WIN, viewChosen);
+                if(userChoice == CAT)
+//                    resultText.setText("Sorry, you lose...");
+                    displayResult(LOSE,viewChosen);
+                if(userChoice == ELEPHANT)
+//                    resultText.setText("This is a tie");
+                    displayResult(TIE,viewChosen);
                 break;
             default:
                 break;
         }
+    }
+
+    private void displayResult(int result, View viewChosen)
+    {
+        Intent startResult = new Intent(this, DisplayResult.class);
+        switch (result)
+        {
+            case WIN:
+                win ++;
+                startResult.putExtra("Result", WIN);
+                break;
+            case LOSE:
+                lose ++;
+                startResult.putExtra("Result", LOSE);
+                break;
+            case TIE:
+                tie ++;
+                startResult.putExtra("Result", TIE);
+                break;
+            default:
+                break;
+        }
+        startActivity(startResult);
+        resultText.setText(String.format("The current result is Win %d, Lose %d, Tie %d", win, lose, tie));
     }
 }
