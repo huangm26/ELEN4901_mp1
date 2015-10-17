@@ -1,7 +1,11 @@
 package com.example.huangm26.elen4901_mp1;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +33,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int lose;
     private int tie;
 
+
+    //for music service
+    private boolean mIsBound = false;
+    private MusicService mServ;
+    private ServiceConnection Scon =new ServiceConnection(){
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((MusicService.ServiceBinder)binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +64,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button mouse_button = (Button) this.findViewById(R.id.mouse);
         Button cat_button = (Button) this.findViewById(R.id.cat);
         Button elephant_button = (Button) this.findViewById(R.id.elephant);
-
+        Button exit_button = (Button) this.findViewById(R.id.exit);
         /*
             Set on click listener for buttons
          */
         mouse_button.setOnClickListener(this);
         cat_button.setOnClickListener(this);
         elephant_button.setOnClickListener(this);
+        exit_button.setOnClickListener(this);
 
         /*
             Init the computer output image to be question mark, and init win counter to 0
@@ -59,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         win = 0;
         lose = 0;
         tie = 0;
+
+        //for the music service binder?
+        doBindService();
+        Intent music = new Intent();
+        music.setClass(this,MusicService.class);
+        startService(music);
 
     }
 
@@ -99,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 animal_chosen = ELEPHANT;
                 Toast.makeText(this,"You chose Elephant", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.exit:
+                mServ.stopMusic();
+                finish();
             default:
 //                Toast.makeText(this,"You didn't choose any animal", Toast.LENGTH_SHORT).show();
                 break;
@@ -197,4 +227,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(startResult);
         resultText.setText(String.format("The current result is: Win %d, Lose %d, Tie %d", win, lose, tie));
     }
+
+
+
+    void doBindService(){
+        bindService(new Intent(this,MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService()
+    {
+        if(mIsBound)
+        {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
+
 }
