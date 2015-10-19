@@ -1,5 +1,6 @@
 package com.example.huangm26.elen4901_mp1;
 
+// Source from http://www.codeproject.com/Articles/258176/Adding-Background-Music-to-Android-App
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
