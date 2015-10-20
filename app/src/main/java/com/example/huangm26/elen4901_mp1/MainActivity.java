@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+////////
 import java.util.Random;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final int MOUSE = 1;
