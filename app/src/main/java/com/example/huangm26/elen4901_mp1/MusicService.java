@@ -6,12 +6,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 public class MusicService extends Service implements MediaPlayer.OnErrorListener {
     private final IBinder mBinder = new ServiceBinder();
@@ -35,7 +31,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         super.onCreate();
         mPlayer = MediaPlayer.create(this, R.raw.background);
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mPlayer.setOnErrorListener(this);
+//        mPlayer.setOnErrorListener(this);
 
         if(mPlayer!= null)
         {
@@ -53,6 +49,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 return true;
             }
         });
+
     }
 
     @Override

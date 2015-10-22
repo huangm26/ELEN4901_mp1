@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //for music service
     private boolean mIsBound = false;
     private MusicService mServ;
+    private Intent music;
     private ServiceConnection Scon =new ServiceConnection(){
 
         public void onServiceConnected(ComponentName name, IBinder
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //for the music service binder?
         doBindService();
-        Intent music = new Intent();
+        music = new Intent();
         music.setClass(this,MusicService.class);
         startService(music);
 
@@ -127,7 +128,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this,"You chose Elephant", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.exit:
+                //stop the music, stop the service and unbind the service
                 mServ.stopMusic();
+                stopService(music);
+                doUnbindService();
                 finish();
             default:
 //                Toast.makeText(this,"You didn't choose any animal", Toast.LENGTH_SHORT).show();
